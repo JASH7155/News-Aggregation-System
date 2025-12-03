@@ -1,10 +1,12 @@
 ⭐ README.md — News Aggregation System
+
 📰 News Aggregation System
 
 An automated, end-to-end news pipeline that fetches, normalizes, stores, and serves real-time news across multiple categories.
 Built with Python, Flask, MySQL, HTML/CSS/JS, and a scheduled background processor.
 
 🚀 Features
+
 🔥 Automated News Fetching
 
 Fetches 200+ news articles across 4 categories:
