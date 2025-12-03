@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>News Aggregator</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1>News Aggregator</h1>
+    <div class="controls">
+      <select id="categorySelect">
+        <option value="">All</option>
+        <option value="general">General</option>
+        <option value="technology">Technology</option>
+        <option value="business">Business</option>
+        <option value="sports">Sports</option>
+      </select>
+      <input id="searchInput" placeholder="Search headlines..." />
+      <button id="refreshBtn">Refresh (regen)</button>
+    </div>
+  </header>
+
+  <main class="main-wrapper">
+    <section id="newsContainer" class="cards">
+      <!-- NEWS_CARDS_PLACEHOLDER -->
+    </section>
+
+    <div class="controls-row">
+      <button id="loadMoreBtn" class="btn">Load more</button>
+    </div>
+  </main>
+
+  <footer>
+    <small>Local HTML preview • Data from NewsAPI • Generated locally</small>
+  </footer>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
