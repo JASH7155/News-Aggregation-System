@@ -1,96 +1,76 @@
-⭐ README.md — News Aggregation System
+# 📰 News Aggregation System
 
-📰 News Aggregation System
+A fully automated news aggregation pipeline that fetches, normalizes, stores, and serves real-time news across multiple categories. Includes a dynamic frontend, a recommendation engine, a background scheduler, and a local Flask API server.
 
-An automated, end-to-end news pipeline that fetches, normalizes, stores, and serves real-time news across multiple categories.
-Built with Python, Flask, MySQL, HTML/CSS/JS, and a scheduled background processor.
+Built with **Python, Flask, MySQL, HTML/CSS/JS**.
 
-🚀 Features
+---
 
-🔥 Automated News Fetching
+## 🚀 Features
 
-Fetches 200+ news articles across 4 categories:
+### 🔥 Automated News Fetching
 
-General
+* Fetches **200+ news articles** every cycle using NewsAPI
+* Supports **4 categories**: General, Technology, Business, Sports
+* Normalizes **7+ fields**
+* URL-based duplicate prevention
 
-Technology
+### ⚙️ Data Pipeline & Storage
 
-Business
+* Stores normalized news data in **MySQL**
+* Clean schema with indexes
+* Fast retrieval & safe inserts
 
-Sports
+### 🖥️ Dynamic Frontend UI
 
-Uses NewsAPI /everything endpoint
+* Modern responsive card layout
+* Category filter & search
+* **Load More** button
+* Lazy-loaded images
+* **Relative timestamps** (e.g., “2h ago”)
+* Recommendation sidebar
 
-Normalizes 7+ fields (title, description, URL, image, source, category, timestamp)
+### 🤖 Recommendation Engine
 
-Deduplicates articles using unique URL constraints
+Simple & explainable:
 
-⚙️ Data Pipeline & Storage
+* Title + description similarity
+* Category preference
+* Recency boost
+* Returns top 6 recommended articles
 
-MySQL-backed storage
+### ⏱️ Automated Scheduler
 
-URL-based deduplication
+Runs every **10 minutes**:
 
-Clean table schema with indexing
+* Fetches new data
+* Updates MySQL
+* Regenerates UI
+* Logs stored in `logs/scheduler.log`
 
-Stores articles in a structured format for fast retrieval
+### 🌐 Flask API Server
 
-🖥️ Dynamic Frontend UI
+| Endpoint         | Description                |
+| ---------------- | -------------------------- |
+| `/api/latest`    | Returns latest articles    |
+| `/api/refresh`   | Triggers fetch + DB update |
+| `/api/recommend` | Returns recommendations    |
+| `/`              | Serves frontend            |
 
-Modern card layout with images, descriptions, timestamps
+---
 
-Category filter & Search bar
+## 🧱 Project Structure
 
-“Load More” functionality
-
-Relative timestamps like “2h ago”
-
-Lazy-loading images (improves performance)
-
-Responsive layout for mobile & desktop
-
-🤖 Recommendation Engine
-
-Simple content-based recommendation (title/description similarity)
-
-Category preference boosting
-
-Recency-weighted scoring
-
-Displayed as a sidebar in the UI
-
-⏱️ Background Scheduler
-
-Runs every 10 minutes
-
-Fetches new data
-
-Inserts into MySQL
-
-Regenerates static UI page
-
-Logs every cycle into logs/scheduler.log
-
-🌐 Local API Server
-
-Powered by Flask:
-
-Endpoint	Description
-/api/latest	Returns latest articles from MySQL
-/api/refresh	Triggers background fetch & DB update
-/api/recommend	Returns recommended articles
-/	Serves the UI frontend
-🧱 Project Structure
+```
 news_aggregator/
-│
 ├── src/
-│   ├── config.py           # Load .env settings
-│   ├── db.py               # MySQL connection + queries
-│   ├── fetch_news.py       # Fetch & normalize news
-│   ├── normalizer.py       # Clean article normalization logic
-│   ├── generate_html.py    # Build the frontend index.html
-│   ├── scheduler.py        # Automated scheduled job
-│   └── server.py           # Flask API server
+│   ├── config.py
+│   ├── db.py
+│   ├── fetch_news.py
+│   ├── normalizer.py
+│   ├── generate_html.py
+│   ├── scheduler.py
+│   └── server.py
 │
 ├── templates/
 │   └── index_template.html
@@ -100,56 +80,69 @@ news_aggregator/
 │   └── script.js
 │
 ├── output/
-│   └── index.html          # Generated UI
+│   └── index.html
 │
 ├── logs/
 │   └── scheduler.log
 │
 ├── .env.example
-├── .gitignore
 ├── requirements.txt
 └── README.md
+```
 
-🛠️ Installation & Setup
-1️⃣ Clone the Repository
+---
+
+## 🛠️ Installation & Setup
+
+### 1️⃣ Clone Repository
+
+```
 git clone https://github.com/JASH7155/News-Aggregation-System
 cd News-Aggregation-System
+```
 
-2️⃣ Create & Activate Virtual Environment
+### 2️⃣ Create Virtual Environment
 
 Windows:
 
+```
 python -m venv venv
 venv\Scripts\activate
-
+```
 
 Mac/Linux:
 
+```
 python3 -m venv venv
 source venv/bin/activate
+```
 
-3️⃣ Install Dependencies
+### 3️⃣ Install Dependencies
+
+```
 pip install -r requirements.txt
+```
 
-4️⃣ Configure Environment Variables
+### 4️⃣ Environment Variables
 
-Copy .env.example → .env and add your details:
+Create `.env` (based on `.env.example`):
 
-NEWSAPI_KEY=YOUR_KEY
+```
+NEWSAPI_KEY=YOUR_NEWS_API_KEY
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
 DB_PASS=your_password
 DB_NAME=newsdb
+```
 
-5️⃣ Create MySQL Database
+### 5️⃣ MySQL Database Setup
 
-Run inside MySQL Workbench or CLI:
-
+```
 CREATE DATABASE IF NOT EXISTS newsdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE newsdb;
 
-CREATE TABLE IF NOT EXISTS articles (
+CREATE TABLE articles (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(300),
   description TEXT,
@@ -162,87 +155,111 @@ CREATE TABLE IF NOT EXISTS articles (
   INDEX idx_category (category),
   INDEX idx_published_at (published_at)
 );
+```
 
-▶️ Running the Project
-🔹 Run backend API server
+---
+
+## ▶️ Running the Project
+
+### 🔹 Run API Server
+
+```
 python src/server.py
-
+```
 
 Open browser:
 
+```
 http://127.0.0.1:5000
+```
 
+### 🔹 Start Scheduler
 
-The UI will:
-
-Fetch latest data from /api/latest
-
-Show recommendations
-
-Allow filters, search, and load more
-
-🔹 Run the Scheduler
+```
 python src/scheduler.py
+```
 
+### 🔹 Manually Fetch Articles
 
-Runs every 10 minutes and updates the system automatically.
-
-🔹 Run manual data fetch
+```
 python src/fetch_news.py
+```
 
-🔹 Regenerate UI HTML
+### 🔹 Regenerate UI
+
+```
 python src/generate_html.py
+```
 
-🎨 UI Highlights
-✓ Modern card layout
-✓ Lazy-loaded thumbnails
-✓ “Load More” pagination
-✓ Category filter & search
-✓ Recommendations sidebar
-✓ Fully responsive
-🧠 Recommendation Algorithm (Simple, Explainable)
+---
 
-Extracts keywords from title + description
+## 🎨 UI Highlights
 
-Computes overlap score
+* Category filtering
+* Search bar
+* Load More button
+* Lazy image loading
+* Responsive card design
+* Recommendation sidebar
+* Clean user experience
 
-Adds category bonus
+---
 
-Adds recency bonus
+## 🧠 Recommendation Logic
 
-Returns top-N articles
+Each recommendation is ranked using:
 
-This makes the recommendation logic transparent and discussable in interviews.
+1. Word overlap between titles/descriptions
+2. Category match
+3. Recent articles boosted
+4. Top 6 articles returned
 
-📦 Future Improvements (Interview Talking Points)
+---
 
-TF-IDF or embedding-based recommendation
+## 🧩 Future Enhancements
 
-Redis caching for /api/latest
+* Better recommendation model (TF-IDF / embeddings)
+* Redis caching for API
+* Docker containerization
+* Cloud deployment
+* CI/CD via GitHub Actions
+* User preference tracking
 
-Queue-based job runner (Celery / RQ)
+---
 
-Dockerized deployment
+## 📸 Screenshots (Add yours)
 
-CI/CD with GitHub Actions
+Create a folder:
 
-Authentication for /api/refresh
-
-Deploy server on Render/Heroku
-
-📸 Screenshots (Add yours here)
+```
 screenshots/
- ├── homepage.png
- ├── recommendations.png
- ├── scheduler.png
- └── mysql.png
+  homepage.png
+  recommendations.png
+  scheduler.png
+  mysql.png
+```
 
+Example markdown:
 
-Example:
-
+```
 ### Homepage
 ![Homepage](screenshots/homepage.png)
+```
 
-📝 License
+---
+
+## 📝 License
 
 MIT License
+
+---
+
+## 👤 Author
+
+**Sai Jashwanth Pantham**
+
+CMR Engineering College
+
+GitHub: [https://github.com/JASH7155](https://github.com/JASH7155)
+
+
